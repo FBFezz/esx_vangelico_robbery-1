@@ -10,7 +10,6 @@ function get3DDistance(x1, y1, z1, x2, y2, z2)
 end
 
 function CountCops()
-
 	local xPlayers = ESX.GetPlayers()
 
 	CopsConnected = 0
@@ -21,7 +20,6 @@ function CountCops()
 			CopsConnected = CopsConnected + 1
 		end
 	end
-
 	SetTimeout(120 * 1000, CountCops)
 end
 
@@ -67,24 +65,17 @@ end)
 
 RegisterServerEvent('esx_vangelico_robbery:rob')
 AddEventHandler('esx_vangelico_robbery:rob', function(robb)
-
 	local source = source
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local xPlayers = ESX.GetPlayers()
-	
 	if Stores[robb] then
-
 		local store = Stores[robb]
-
 		if (os.time() - store.lastrobbed) < Config.SecBetwNextRob and store.lastrobbed ~= 0 then
-
             TriggerClientEvent('esx_vangelico_robbery:togliblip', source)
 			TriggerClientEvent('esx:showNotification', source, _U('already_robbed') .. (Config.SecBetwNextRob - (os.time() - store.lastrobbed)) .. _U('seconds'))
 			return
 		end
-
 		if rob == false then
-
 			rob = true
 			for i=1, #xPlayers, 1 do
 				local xPlayer = ESX.GetPlayerFromId(xPlayers[i])
@@ -108,26 +99,20 @@ end)
 
 RegisterServerEvent('esx_vangelico_robbery:gioielli')
 AddEventHandler('esx_vangelico_robbery:gioielli', function()
-
 	local xPlayer = ESX.GetPlayerFromId(source)
-
 	xPlayer.addInventoryItem('jewels', math.random(Config.MinJewels, Config.MaxJewels))
 end)
 
 RegisterServerEvent('lester:vendita')
 AddEventHandler('lester:vendita', function()
-
 	local _source = source
 	local xPlayer = ESX.GetPlayerFromId(_source)
 	local reward = math.floor(Config.PriceForOneJewel * Config.MaxJewelsSell)
-
 	xPlayer.removeInventoryItem('jewels', Config.MaxJewelsSell)
 	xPlayer.addMoney(reward)
 end)
 
 ESX.RegisterServerCallback('esx_vangelico_robbery:conteggio', function(source, cb)
 	local xPlayer = ESX.GetPlayerFromId(source)
-
 	cb(CopsConnected)
 end)
-
