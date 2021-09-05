@@ -1,6 +1,5 @@
 local rob = false
 local robbers = {}
-PlayersCrafting    = {}
 local CopsConnected  = 0
 ESX = nil
 
