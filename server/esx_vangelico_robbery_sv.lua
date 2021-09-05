@@ -11,9 +11,7 @@ end
 
 function CountCops()
 	local xPlayers = ESX.GetPlayers()
-
 	CopsConnected = 0
-
 	for i=1, #xPlayers, 1 do
 		local xPlayer = ESX.GetPlayerFromId(xPlayers[i])
 		if xPlayer.job.name == 'police' then
@@ -84,7 +82,6 @@ AddEventHandler('esx_vangelico_robbery:rob', function(robb)
 					TriggerClientEvent('esx_vangelico_robbery:setblip', xPlayers[i], Stores[robb].position)
 				end
 			end
-
 			TriggerClientEvent('esx:showNotification', source, _U('started_to_rob') .. store.nameofstore .. _U('do_not_move'))
 			TriggerClientEvent('esx:showNotification', source, _U('alarm_triggered'))
 			TriggerClientEvent('esx:showNotification', source, _U('hold_pos'))
@@ -103,8 +100,8 @@ AddEventHandler('esx_vangelico_robbery:jewels', function()
 	xPlayer.addInventoryItem('jewels', math.random(Config.MinJewels, Config.MaxJewels))
 end)
 
-RegisterServerEvent('lester:vendita')
-AddEventHandler('lester:vendita', function()
+RegisterServerEvent('lester:sale')
+AddEventHandler('lester:sale', function()
 	local _source = source
 	local xPlayer = ESX.GetPlayerFromId(_source)
 	local reward = math.floor(Config.PriceForOneJewel * Config.MaxJewelsSell)
@@ -112,7 +109,7 @@ AddEventHandler('lester:vendita', function()
 	xPlayer.addMoney(reward)
 end)
 
-ESX.RegisterServerCallback('esx_vangelico_robbery:conteggio', function(source, cb)
+ESX.RegisterServerCallback('esx_vangelico_robbery:count', function(source, cb)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	cb(CopsConnected)
 end)
