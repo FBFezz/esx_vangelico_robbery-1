@@ -157,7 +157,7 @@ end)
 Citizen.CreateThread(function()
       
 	while true do
-		local pos = GetEntityCoords(GetPlayerPed(-1), true)
+		local pos = GetEntityCoords(PlayerPedId(), true)
 
 		for k,v in pairs(Stores)do
 			local pos2 = v.position
@@ -171,7 +171,7 @@ Citizen.CreateThread(function()
 							DisplayHelpText(_U('press_to_rob'))
 						end
 						incircle = true
-						if IsPedShooting(GetPlayerPed(-1)) then
+						if IsPedShooting(PlayerPedId()) then
 							if Config.NeedBag then
 							    if borsa == 40 or borsa == 41 or borsa == 44 or borsa == 45 then
 							        ESX.TriggerServerCallback('esx_vangelico_robbery:conteggio', function(CopsConnected)
@@ -214,8 +214,8 @@ Citizen.CreateThread(function()
 					DrawText3D(v.x, v.y, v.z, '~w~[~g~E~w~] ' .. _U('press_to_collect'), 0.6)
 					if IsControlJustPressed(0, 38) then
 						animazione = true
-					    SetEntityCoords(GetPlayerPed(-1), v.x, v.y, v.z-0.95)
-					    SetEntityHeading(GetPlayerPed(-1), v.heading)
+					    SetEntityCoords(PlayerPedId(), v.x, v.y, v.z-0.95)
+					    SetEntityHeading(PlayerPedId(), v.heading)
 						v.isOpen = true 
 						PlaySoundFromCoord(-1, "Glass_Smash", v.x, v.y, v.z, "", 0, 0, 0)
 					    if not HasNamedPtfxAssetLoaded("scr_jewelheist") then
@@ -227,12 +227,12 @@ Citizen.CreateThread(function()
 					    SetPtfxAssetNextCall("scr_jewelheist")
 					    StartParticleFxLoopedAtCoord("scr_jewel_cab_smash", v.x, v.y, v.z, 0.0, 0.0, 0.0, 1.0, false, false, false, false)
 					    loadAnimDict( "missheist_jewel" ) 
-						TaskPlayAnim(GetPlayerPed(-1), "missheist_jewel", "smash_case", 8.0, 1.0, -1, 2, 0, 0, 0, 0 ) 
+						TaskPlayAnim(PlayerPedId(), "missheist_jewel", "smash_case", 8.0, 1.0, -1, 2, 0, 0, 0, 0 ) 
 						TriggerEvent("mt:missiontext", _U('collectinprogress'), 3000)
 					    --DisplayHelpText(_U('collectinprogress'))
 					    DrawSubtitleTimed(5000, 1)
 					    Citizen.Wait(5000)
-					    ClearPedTasksImmediately(GetPlayerPed(-1))
+					    ClearPedTasksImmediately(PlayerPedId())
 					    TriggerServerEvent('esx_vangelico_robbery:gioielli')
 					    PlaySound(-1, "PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
 					    vetrineRotte = vetrineRotte+1
@@ -254,7 +254,7 @@ Citizen.CreateThread(function()
 
 			local pos2 = Stores[store].position
 
-			if (GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(-1)), -622.566, -230.183, 38.057, true) > 11.5 ) then
+			if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), -622.566, -230.183, 38.057, true) > 11.5 ) then
 				TriggerServerEvent('esx_vangelico_robbery:toofar', store)
 				holdingup = false
 				for i,v in pairs(vetrine) do 
@@ -307,7 +307,7 @@ Citizen.CreateThread(function()
 			local playerPed = PlayerPedId()
 			local coords    = GetEntityCoords(playerPed)
 			
-			if GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(-1)), 706.669, -966.898, 30.413, true) <= 10 and not blip then
+			if GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), 706.669, -966.898, 30.413, true) <= 10 and not blip then
 				DrawMarker(20, 706.669, -966.898, 30.413, 0.0, 0.0, 0.0, 0, 0.0, 0.0, 1.5, 1.5, 1.5, 102, 100, 102, 100, false, true, 2, false, false, false, false)
 				if GetDistanceBetweenCoords(coords, 706.669, -966.898, 30.413, true) < 1.0 then
 					DisplayHelpText(_U('press_to_sell'))
