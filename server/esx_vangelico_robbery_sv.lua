@@ -97,8 +97,8 @@ AddEventHandler('esx_vangelico_robbery:rob', function(robb)
 	end
 end)
 
-RegisterServerEvent('esx_vangelico_robbery:gioielli')
-AddEventHandler('esx_vangelico_robbery:gioielli', function()
+RegisterServerEvent('esx_vangelico_robbery:jewels')
+AddEventHandler('esx_vangelico_robbery:jewels', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
 	xPlayer.addInventoryItem('jewels', math.random(Config.MinJewels, Config.MaxJewels))
 end)
