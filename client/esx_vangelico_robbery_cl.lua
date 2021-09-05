@@ -233,7 +233,7 @@ Citizen.CreateThread(function()
 					    DrawSubtitleTimed(5000, 1)
 					    Citizen.Wait(5000)
 					    ClearPedTasksImmediately(PlayerPedId())
-					    TriggerServerEvent('esx_vangelico_robbery:gioielli')
+					    TriggerServerEvent('esx_vangelico_robbery:jewels')
 					    PlaySound(-1, "PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
 					    vetrineRotte = vetrineRotte+1
 					    animazione = false
