@@ -1,9 +1,9 @@
 local holdingup = false
-local store = ""
+local store = ''
 local blipRobbery = nil
-local vetrineRotte = 0 
+local BrokenShowcases = 0 
 
-local vetrine = {
+local Showcases = {
 	{x = 147.085, y = -1048.612, z = 29.346, heading = 70.326, isOpen = false},--
 	{x = -626.735, y = -238.545, z = 38.057, heading = 214.907, isOpen = false},--
 	{x = -625.697, y = -237.877, z = 38.057, heading = 217.311, isOpen = false},--
@@ -142,13 +142,13 @@ function drawTxt(x, y, scale, text, red, green, blue, alpha)
     DrawText(0.155, 0.935)
 end
 
-local borsa = nil
+local bag = nil
 
 Citizen.CreateThread(function()
 	while true do
 	  Citizen.Wait(1000)
 	  TriggerEvent('skinchanger:getSkin', function(skin)
-		borsa = skin['bags_1']
+		bag = skin['bags_1']
 	  end)
 	  Citizen.Wait(1000)
 	end
@@ -173,8 +173,8 @@ Citizen.CreateThread(function()
 						incircle = true
 						if IsPedShooting(PlayerPedId()) then
 							if Config.NeedBag then
-							    if borsa == 40 or borsa == 41 or borsa == 44 or borsa == 45 then
-							        ESX.TriggerServerCallback('esx_vangelico_robbery:conteggio', function(CopsConnected)
+							    if bag == 40 or bag == 41 or bag == 44 or bag == 45 then
+							        ESX.TriggerServerCallback('esx_vangelico_robbery:count', function(CopsConnected)
 								        if CopsConnected >= Config.RequiredCopsRob then
 							                TriggerServerEvent('esx_vangelico_robbery:rob', k)
 									        PlaySoundFromCoord(soundid, "VEHICLES_HORNS_AMBULANCE_WARNING", pos2.x, pos2.y, pos2.z)
@@ -186,7 +186,7 @@ Citizen.CreateThread(function()
 							        TriggerEvent('esx:showNotification', _U('need_bag'))
 								end
 							else
-								ESX.TriggerServerCallback('esx_vangelico_robbery:conteggio', function(CopsConnected)
+								ESX.TriggerServerCallback('esx_vangelico_robbery:count', function(CopsConnected)
 									if CopsConnected >= Config.RequiredCopsRob then
 										TriggerServerEvent('esx_vangelico_robbery:rob', k)
 										PlaySoundFromCoord(soundid, "VEHICLES_HORNS_AMBULANCE_WARNING", pos2.x, pos2.y, pos2.z)
@@ -204,9 +204,9 @@ Citizen.CreateThread(function()
 		end
 
 		if holdingup then
-			drawTxt(0.3, 1.4, 0.45, _U('smash_case') .. ' :~r~ ' .. vetrineRotte .. '/' .. Config.MaxWindows, 185, 185, 185, 255)
+			drawTxt(0.3, 1.4, 0.45, _U('smash_case') .. ' :~r~ ' .. BrokenShowcases .. '/' .. Config.MaxWindows, 185, 185, 185, 255)
 
-			for i,v in pairs(vetrine) do 
+			for i,v in pairs(Showcases) do 
 				if(GetDistanceBetweenCoords(pos, v.x, v.y, v.z, true) < 10.0) and not v.isOpen and Config.EnableMarker then 
 					DrawMarker(20, v.x, v.y, v.z, 0, 0, 0, 0, 0, 0, 0.6, 0.6, 0.6, 0, 255, 0, 200, 1, 1, 0, 0)
 				end
@@ -235,13 +235,13 @@ Citizen.CreateThread(function()
 					    ClearPedTasksImmediately(PlayerPedId())
 					    TriggerServerEvent('esx_vangelico_robbery:jewels')
 					    PlaySound(-1, "PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0, 0, 1)
-					    vetrineRotte = vetrineRotte+1
+					    BrokenShowcases = BrokenShowcases+1
 					    animazione = false
 
-						if vetrineRotte == Config.MaxWindows then 
-						    for i,v in pairs(vetrine) do 
+						if BrokenShowcases == Config.MaxWindows then 
+						    for i,v in pairs(Showcases) do 
 								v.isOpen = false
-								vetrineRotte = 0
+								BrokenShowcases = 0
 							end
 							TriggerServerEvent('esx_vangelico_robbery:endrob', store)
 						    ESX.ShowNotification(_U('lester'))
@@ -257,9 +257,9 @@ Citizen.CreateThread(function()
 			if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), -622.566, -230.183, 38.057, true) > 11.5 ) then
 				TriggerServerEvent('esx_vangelico_robbery:toofar', store)
 				holdingup = false
-				for i,v in pairs(vetrine) do 
+				for i,v in pairs(Showcases) do 
 					v.isOpen = false
-					vetrineRotte = 0
+					BrokenShowcases = 0
 				end
 				StopSound(soundid)
 			end
@@ -315,13 +315,13 @@ Citizen.CreateThread(function()
 						blip = true
 						ESX.TriggerServerCallback('esx_ambulancejob:getItemAmount', function(quantity)
 							if quantity >= Config.MaxJewelsSell then
-								ESX.TriggerServerCallback('esx_vangelico_robbery:conteggio', function(CopsConnected)
+								ESX.TriggerServerCallback('esx_vangelico_robbery:count', function(CopsConnected)
 									if CopsConnected >= Config.RequiredCopsSell then
 										FreezeEntityPosition(playerPed, true)
 										TriggerEvent('mt:missiontext', _U('goldsell'), 10000)
 										Wait(10000)
 										FreezeEntityPosition(playerPed, false)
-										TriggerServerEvent('lester:vendita')
+										TriggerServerEvent('lester:sale')
 										blip = false
 									else
 										blip = false
@@ -338,4 +338,3 @@ Citizen.CreateThread(function()
 			end
 	end
 end)
-
